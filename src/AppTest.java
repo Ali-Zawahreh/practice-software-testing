@@ -38,7 +38,7 @@ public class AppTest extends TestCases {
 		driver.get(URL);
 		driver.manage().window().maximize();
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/final_project", "root", "1234");
-		String query = "SELECT * FROM user_info WHERE id = 4;";
+		String query = "SELECT * FROM user_info WHERE id = 8;";
 		stmt = con.createStatement();
 		rs = stmt.executeQuery(query);
 		while (rs.next()) {
@@ -69,15 +69,42 @@ public class AppTest extends TestCases {
 		assertTrue(driver.findElement(By.xpath("//a[@href='/contact']")).isDisplayed());
 		assertTrue(driver.findElement(By.cssSelector(".nav-link.dropdown-toggle")).isDisplayed());
 	}
-
+	
 	@Test(priority = 2, enabled = true)
-	public void SignIn() throws SQLException, InterruptedException {
+	public void FooterLinks() throws InterruptedException {
+		List<WebElement> ActualLinks = driver.findElements(By.xpath("//a[@target='_blank']"));
+		driver.findElement(By.xpath("//a[@routerlink='privacy']")).click();
+		Thread.sleep(2000);
+		String ActualPrivacyLink = driver.getCurrentUrl();
+		Assert.assertEquals(ActualPrivacyLink, ExpectedPrivacyRedirectedLink);
 
+		Assert.assertEquals(ActualLinks.get(0).getDomAttribute("href"), ExpectedGitHubRedirectedLink);
+		Assert.assertEquals(ActualLinks.get(1).getDomAttribute("href"), ExpectedSupportRedirectedLink);
+		Assert.assertEquals(ActualLinks.get(2).getDomAttribute("href"), ExpectedBarnRedirectedLink);
+		Assert.assertEquals(ActualLinks.get(3).getDomAttribute("href"), ExpectedUnsplashRedirectedLink);
+
+	}
+	
+	@Test(priority = 3, enabled = true)
+	public void RegistrationFormValidation() throws InterruptedException {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
 		Signin.click();
 		Thread.sleep(1000);
 		WebElement Register = driver.findElement(By.xpath("//a[@href='/auth/register']"));
 		Register.click();
+		Thread.sleep(2000);
+		driver.findElement(By.cssSelector("button[type='submit']")).click();
+		Thread.sleep(2000);
+		WebElement errorElement = driver.findElement(By.cssSelector(".alert.alert-danger.mt-3"));
+		Boolean actualErrorMsg = errorElement.isDisplayed();
+
+		Assert.assertEquals(actualErrorMsg, ExpectedErrorMsg,
+				"Expected validation error message to mention 'required'. Actual message: ");
+	}
+
+	@Test(priority = 4, enabled = true)
+	public void SignIn() throws SQLException, InterruptedException {
+		
 		driver.findElement(By.id("first_name")).sendKeys(FirstName);
 		driver.findElement(By.id("last_name")).sendKeys(Lastname);
 		DateOfBirth = formatter.format(dob);
@@ -100,19 +127,9 @@ public class AppTest extends TestCases {
 
 	}
 
-	@Test(priority = 3, enabled = false)
-	public void RegistrationFormValidation() throws InterruptedException {
-		driver.get("https://practicesoftwaretesting.com/auth/register");
-		driver.findElement(By.cssSelector("button[type='submit']")).click();
-		Thread.sleep(2000);
-		WebElement errorElement = driver.findElement(By.cssSelector(".alert.alert-danger.mt-3"));
-		Boolean actualErrorMsg = errorElement.isDisplayed();
+	
 
-		Assert.assertEquals(actualErrorMsg, ExpectedErrorMsg,
-				"Expected validation error message to mention 'required'. Actual message: ");
-	}
-
-	@Test(priority = 4, enabled = false)
+	@Test(priority = 5, enabled = true)
 	public void LoginWithInvalidData() throws InterruptedException {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
 		Signin.click();
@@ -126,13 +143,18 @@ public class AppTest extends TestCases {
 
 	}
 
-	@Test(priority = 5, enabled = false)
+	@Test(priority = 6, enabled = true)
 	public void LoginWithIncorrectData() throws InterruptedException, SQLException {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
 		Signin.click();
-
+		WebElement EmailField = driver.findElement(By.id("email"));
+		EmailField.clear();
 		driver.findElement(By.id("email")).sendKeys("InnCorrectData@gmail.com");
+		
+		WebElement PasswordField = driver.findElement(By.id("password"));
+		PasswordField.clear();
 		driver.findElement(By.id("password")).sendKeys("12345678@");
+		
 		WebElement loginBtn = driver.findElement(By.className("btnSubmit"));
 		loginBtn.click();
 		Thread.sleep(1000);
@@ -142,13 +164,19 @@ public class AppTest extends TestCases {
 
 	}
 
-	@Test(priority = 6, enabled = true)
+	@Test(priority = 7, enabled = true)
 	public void Login() throws InterruptedException {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
 		Signin.click();
 		Thread.sleep(2000);
+		WebElement EmailField = driver.findElement(By.id("email"));
+		EmailField.clear();
 		driver.findElement(By.id("email")).sendKeys(Email);
+		
+		WebElement PasswordField = driver.findElement(By.id("password"));
+		PasswordField.clear();
 		driver.findElement(By.id("password")).sendKeys(Password);
+		
 		WebElement loginBtn = driver.findElement(By.className("btnSubmit"));
 		loginBtn.click();
 		Thread.sleep(3000);
@@ -158,20 +186,20 @@ public class AppTest extends TestCases {
 		Assert.assertEquals(actualName.trim(), expectedName, "Username does not match.");
 
 	}
+	
+	// Note :if you want to run this test you must run the login test first
+		@Test(priority = 8, enabled = true)
+		public void LogOut() throws InterruptedException {
+			driver.findElement(By.id("menu")).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath("//a[@data-test='nav-sign-out']")).click();
+			Thread.sleep(3000);
+			String ActualLink = driver.getCurrentUrl();
+			Assert.assertEquals(ActualLink, ExpectedRedirectedLink);
 
-	@Test(priority = 7, enabled = false)
-	public void ProductNavigationviaHeaderMenu() throws InterruptedException {
-		driver.get(URL);
-		Thread.sleep(3000);
-		driver.findElement(By.cssSelector(".nav-link.dropdown-toggle")).click();
-		Thread.sleep(2000);
-		List<WebElement> categories = driver.findElements(By.cssSelector(".dropdown-menu.show .dropdown-item"));
-		int RandomCategories = rand.nextInt(categories.size());
-		categories.get(RandomCategories).click();
+		}
 
-	}
-
-	@Test(priority = 8, enabled = true)
+	@Test(priority = 9, enabled = true)
 	public void AddProductToCart() throws InterruptedException {
 		driver.get(URL);
 		Thread.sleep(2000);
@@ -251,7 +279,7 @@ public class AppTest extends TestCases {
 
 	// ==> Note : if you want to turn on this test you must turn on (Enabled = true
 	// ) Add product to cart test first
-	@Test(priority = 9, enabled = false)
+	@Test(priority = 10, enabled = true)
 	public void CheckOutNavigation() throws InterruptedException {
 		// driver.get(URL + "products/tools");
 
@@ -267,7 +295,7 @@ public class AppTest extends TestCases {
 	}
 
 	// ==> Note : if you want to turn this test you must turn Add product to cart
-	@Test(priority = 10, enabled = false)
+	@Test(priority = 11, enabled = true)
 	public void RemoveItemFromCart() throws InterruptedException {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -281,32 +309,18 @@ public class AppTest extends TestCases {
 		Assert.assertEquals(ActualTotal, "$0.00");
 
 	}
-
-	@Test(priority = 11, enabled = false)
-	public void FooterLinks() throws InterruptedException {
-		List<WebElement> ActualLinks = driver.findElements(By.xpath("//a[@target='_blank']"));
-		driver.findElement(By.xpath("//a[@routerlink='privacy']")).click();
+	@Test(priority = 12, enabled = true)
+	public void ProductNavigationviaHeaderMenu() throws InterruptedException {
+		driver.get(URL);
+		Thread.sleep(3000);
+		driver.findElement(By.cssSelector(".nav-link.dropdown-toggle")).click();
 		Thread.sleep(2000);
-		String ActualPrivacyLink = driver.getCurrentUrl();
-		Assert.assertEquals(ActualPrivacyLink, ExpectedPrivacyRedirectedLink);
-
-		Assert.assertEquals(ActualLinks.get(0).getDomAttribute("href"), ExpectedGitHubRedirectedLink);
-		Assert.assertEquals(ActualLinks.get(1).getDomAttribute("href"), ExpectedSupportRedirectedLink);
-		Assert.assertEquals(ActualLinks.get(2).getDomAttribute("href"), ExpectedBarnRedirectedLink);
-		Assert.assertEquals(ActualLinks.get(3).getDomAttribute("href"), ExpectedUnsplashRedirectedLink);
+		List<WebElement> categories = driver.findElements(By.cssSelector(".dropdown-menu.show .dropdown-item"));
+		int RandomCategories = rand.nextInt(categories.size());
+		categories.get(RandomCategories).click();
 
 	}
 
-	// Note :if you want to run this test you must run the login test first
-	@Test(priority = 12, enabled = false)
-	public void LogOut() throws InterruptedException {
-		driver.findElement(By.id("menu")).click();
-		Thread.sleep(1000);
-		driver.findElement(By.xpath("//a[@data-test='nav-sign-out']")).click();
-		Thread.sleep(2000);
-		String ActualLink = driver.getCurrentUrl();
-		Assert.assertEquals(ActualLink, ExpectedRedirectedLink);
-
-	}
+	
 
 }
