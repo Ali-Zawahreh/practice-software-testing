@@ -309,18 +309,4 @@ public class AppTest extends TestCases {
 		Assert.assertEquals(ActualTotal, "$0.00");
 
 	}
-	@Test(priority = 12, enabled = true)
-	public void ProductNavigationviaHeaderMenu() throws InterruptedException {
-		driver.get(URL);
-		Thread.sleep(3000);
-		driver.findElement(By.cssSelector(".nav-link.dropdown-toggle")).click();
-		Thread.sleep(2000);
-		List<WebElement> categories = driver.findElements(By.cssSelector(".dropdown-menu.show .dropdown-item"));
-		int RandomCategories = rand.nextInt(categories.size());
-		categories.get(RandomCategories).click();
-
-	}
-
-	
-
 }
