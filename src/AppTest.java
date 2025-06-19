@@ -38,7 +38,7 @@ public class AppTest extends TestCases {
 		driver.get(URL);
 		driver.manage().window().maximize();
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/final_project", "root", "1234");
-		String query = "SELECT * FROM user_info WHERE id = 8;";
+		String query = "SELECT * FROM user_info WHERE id = 1;";
 		stmt = con.createStatement();
 		rs = stmt.executeQuery(query);
 		while (rs.next()) {
