@@ -69,7 +69,7 @@ public class AppTest extends TestCases {
 		assertTrue(driver.findElement(By.xpath("//a[@href='/contact']")).isDisplayed());
 		assertTrue(driver.findElement(By.cssSelector(".nav-link.dropdown-toggle")).isDisplayed());
 	}
-
+	
 	@Test(priority = 2, enabled = true)
 	public void FooterLinks() throws InterruptedException {
 		List<WebElement> ActualLinks = driver.findElements(By.xpath("//a[@target='_blank']"));
@@ -84,7 +84,11 @@ public class AppTest extends TestCases {
 		Assert.assertEquals(ActualLinks.get(3).getDomAttribute("href"), ExpectedUnsplashRedirectedLink);
 
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 	@Test(priority = 3, enabled = true)
 	public void RegistrationFormValidation() throws InterruptedException {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
@@ -104,7 +108,11 @@ public class AppTest extends TestCases {
 
 	@Test(priority = 4, enabled = true)
 	public void SignIn() throws SQLException, InterruptedException {
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 		driver.findElement(By.id("first_name")).sendKeys(FirstName);
 		driver.findElement(By.id("last_name")).sendKeys(Lastname);
 		DateOfBirth = formatter.format(dob);
@@ -127,6 +135,11 @@ public class AppTest extends TestCases {
 
 	}
 
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 	@Test(priority = 5, enabled = true)
 	public void LoginWithInvalidData() throws InterruptedException {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
@@ -148,11 +161,19 @@ public class AppTest extends TestCases {
 		WebElement EmailField = driver.findElement(By.id("email"));
 		EmailField.clear();
 		driver.findElement(By.id("email")).sendKeys("InnCorrectData@gmail.com");
+<<<<<<< HEAD
 
 		WebElement PasswordField = driver.findElement(By.id("password"));
 		PasswordField.clear();
 		driver.findElement(By.id("password")).sendKeys("12345678@");
 
+=======
+		
+		WebElement PasswordField = driver.findElement(By.id("password"));
+		PasswordField.clear();
+		driver.findElement(By.id("password")).sendKeys("12345678@");
+		
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 		WebElement loginBtn = driver.findElement(By.className("btnSubmit"));
 		loginBtn.click();
 		Thread.sleep(1000);
@@ -170,11 +191,19 @@ public class AppTest extends TestCases {
 		WebElement EmailField = driver.findElement(By.id("email"));
 		EmailField.clear();
 		driver.findElement(By.id("email")).sendKeys(Email);
+<<<<<<< HEAD
 
 		WebElement PasswordField = driver.findElement(By.id("password"));
 		PasswordField.clear();
 		driver.findElement(By.id("password")).sendKeys(Password);
 
+=======
+		
+		WebElement PasswordField = driver.findElement(By.id("password"));
+		PasswordField.clear();
+		driver.findElement(By.id("password")).sendKeys(Password);
+		
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 		WebElement loginBtn = driver.findElement(By.className("btnSubmit"));
 		loginBtn.click();
 		Thread.sleep(3000);
@@ -184,8 +213,24 @@ public class AppTest extends TestCases {
 		Assert.assertEquals(actualName.trim(), expectedName, "Username does not match.");
 
 	}
+	
+	// Note :if you want to run this test you must run the login test first
+		@Test(priority = 8, enabled = true)
+		public void LogOut() throws InterruptedException {
+			driver.findElement(By.id("menu")).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath("//a[@data-test='nav-sign-out']")).click();
+			Thread.sleep(3000);
+			String ActualLink = driver.getCurrentUrl();
+			Assert.assertEquals(ActualLink, ExpectedRedirectedLink);
 
+<<<<<<< HEAD
 	@Test(priority = 8, enabled = true)
+=======
+		}
+
+	@Test(priority = 9, enabled = true)
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 	public void AddProductToCart() throws InterruptedException {
 		driver.get(URL);
 		Thread.sleep(4000);
@@ -265,7 +310,11 @@ public class AppTest extends TestCases {
 
 	// ==> Note : if you want to turn on this test you must turn on (Enabled = true
 	// ) Add product to cart test first
+<<<<<<< HEAD
 	@Test(priority = 9, enabled = true)
+=======
+	@Test(priority = 10, enabled = true)
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 	public void CheckOutNavigation() throws InterruptedException {
 		// driver.get(URL + "products/tools");
 
@@ -287,7 +336,11 @@ public class AppTest extends TestCases {
 	}
 
 	// ==> Note : if you want to turn this test you must turn Add product to cart
+<<<<<<< HEAD
 	@Test(priority = 10, enabled = true)
+=======
+	@Test(priority = 11, enabled = true)
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 	public void RemoveItemFromCart() throws InterruptedException {
 		driver.get(URL);
 		driver.findElement(By.xpath("//a[@data-test='nav-cart']")).click();
@@ -299,6 +352,7 @@ public class AppTest extends TestCases {
 		Thread.sleep(2000);
 		driver.findElement(By.cssSelector(".btn.btn-danger")).click();
 		Thread.sleep(2000);
+<<<<<<< HEAD
 		String ActualTotal = driver.findElement(By.cssSelector(".wizard-steps.horizontal")).getText();
 		Assert.assertEquals(ActualTotal, "The cart is empty. Nothing to display.");
 
@@ -317,6 +371,10 @@ public class AppTest extends TestCases {
 		WebElement Signin = driver.findElement(By.xpath("//a[@href='/auth/login']"));
 		boolean ActualResult = Signin.isDisplayed();
 		Assert.assertEquals(ActualResult, ExpectedLogOutResult);
+=======
+		String ActualTotal = driver.findElement(By.xpath("//td[@data-test='cart-total']")).getText();
+		Assert.assertEquals(ActualTotal, "$0.00");
+>>>>>>> 81458a4c8be5b6ff3dc20f7eb8143df513d31485
 
 	}
 }
