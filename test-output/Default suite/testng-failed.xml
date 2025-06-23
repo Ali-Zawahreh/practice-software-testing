@@ -6,8 +6,9 @@
       <class name="AppTest">
         <methods>
           <include name="AddProductToCart"/>
+          <include name="RemoveItemFromCart"/>
           <include name="mySetup"/>
-          <include name="SignIn"/>
+          <include name="CheckOutNavigation"/>
         </methods>
       </class> <!-- AppTest -->
     </classes>

@@ -4,13 +4,20 @@ import java.text.SimpleDateFormat;
 public class TestCases {
 	String URL = "https://practicesoftwaretesting.com/";
 	String ExpectedSignInRedirectedLink= "https://practicesoftwaretesting.com/auth/login";
+	
 	String ExpectedGitHubRedirectedLink= "https://github.com/testsmith-io/practice-software-testing";
+	
 	String ExpectedSupportRedirectedLink= "https://testwithroy.com/b/support";
+	
 	String ExpectedPrivacyRedirectedLink = "https://practicesoftwaretesting.com/privacy";
+	
 	String ExpectedBarnRedirectedLink= "https://unsplash.com/@barnimages";
+	
 	String ExpectedUnsplashRedirectedLink= "https://unsplash.com/photos/t5YUoHW6zRo";
-	String ExpectedCheckOutRedirectedLink= "https://practicesoftwaretesting.com/checkout";
-	String ExpectedRedirectedLink="https://practicesoftwaretesting.com/auth/login";
+	
+	boolean ExpectedCheckOutRedirectedLink = true;
+	
+	boolean ExpectedLogOutResult=true;
 
 	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 	String FirstName;
